@@ -3,16 +3,50 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 
-var github = require("octonode");
+axios.interceptors.request.use(
+  config => {
+    const token = process.env.TOKEN;
+    if (token != null) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  err => {
+    return Promise.reject(err);
+  }
+);
 
-var client = github.client();
+const remainingReq = res => {
+  console.log(
+    `REMAINING RESPONSES: ${res.headers["x-ratelimit-remaining"]}`
+  );
+  console.log("/////////////////////////");
+  return res;
+};
 
-var ghrepo = client.repo("markerikson/react-redux-links");
+const logError = err => console.log(err.response.data);
 
-ghrepo.contents("", "master", function(err, data, headers) {
-  let filteredRepoFiles = data.slice(2, data.length);
-});
+async function getData() {
+  const url =
+    "https://api.github.com/repos/markerikson/react-redux-links/contents";
+  return axios
+    .get(url)
+    .then(remainingReq)
+    .catch(logError);
+}
 
-const PORT = 4000;
-app.listen(PORT);
-console.log(`Listening on https://localhost:${PORT} ...`);
+async function main() {
+  const repoData = await getData();
+  const filtered = repoData.data
+    .slice(2, repoData.data.length)
+    .map(obj => {
+      const urlObj = {};
+      urlObj.url = obj.git_url;
+      return urlObj;
+    });
+
+  console.log(filtered);
+  return filtered;
+}
+
+main();
