@@ -2,51 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const axios = require("axios");
+const fs = require("fs");
+require("./axios.config.js");
 
-axios.interceptors.request.use(
-  config => {
-    const token = process.env.TOKEN;
-    if (token != null) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  err => {
-    return Promise.reject(err);
-  }
-);
+const url =
+  "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
-const remainingReq = res => {
-  console.log(
-    `REMAINING RESPONSES: ${res.headers["x-ratelimit-remaining"]}`
-  );
-  console.log("/////////////////////////");
-  return res;
-};
+const logError = err => console.log(err.response);
+const getData = async url =>
+  (await axios.get(url).catch(logError)).data;
 
-const logError = err => console.log(err.response.data);
+async function main(url) {
+  const repoData = await getData(url);
+  const filtered = repoData
+    .slice(2, repoData.length)
+    .map(obj => obj.download_url);
 
-async function getData() {
-  const url =
-    "https://api.github.com/repos/markerikson/react-redux-links/contents";
-  return axios
-    .get(url)
-    .then(remainingReq)
-    .catch(logError);
-}
+  const fileData = await getData(filtered[3]);
 
-async function main() {
-  const repoData = await getData();
-  const filtered = repoData.data
-    .slice(2, repoData.data.length)
-    .map(obj => {
-      const urlObj = {};
-      urlObj.url = obj.git_url;
-      return urlObj;
-    });
-
-  console.log(filtered);
+  console.log(fileData);
   return filtered;
 }
 
-main();
+main(url);
