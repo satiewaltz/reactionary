@@ -15,12 +15,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    console.log(
-      `REMAINING RESPONSES: ${response.headers[
-        "x-ratelimit-remaining"
-      ]}`
-    );
-    console.log("/////////////////////////");
+    if (response.headers["x-ratelimit-remaining"]) {
+      console.log(
+        `REMAINING RESPONSES: ${response.headers[
+          "x-ratelimit-remaining"
+        ]}`
+      );
+    }
+    console.log("// Response Success! /////////////////");
     return response;
   },
   error => {

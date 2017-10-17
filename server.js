@@ -28,7 +28,7 @@ const computeAST = AST => {
     list: lists[i].list
   }));
 
-  console.log(output);
+  console.log(list);
 
   return output;
 };
@@ -49,4 +49,4 @@ async function main(url) {
   return computeAST(AST);
 }
 
-main(repoURL);
+main(repoURL).catch(logError).data;
