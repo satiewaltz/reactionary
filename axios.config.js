@@ -15,10 +15,10 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    let msg = "// Response Success! /////////////////";
+    let msg = "// GitHub Response Success! /////////////////";
     if (response.headers["x-ratelimit-remaining"]) {
       console.log(
-        `REMAINING RESPONSES: ${response.headers[
+        `GitHub REMAINING REQS: ${response.headers[
           "x-ratelimit-remaining"
         ]}`
       );

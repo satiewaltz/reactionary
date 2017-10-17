@@ -39,7 +39,6 @@ const computeAST = AST => {
     list: lists[i]
   }));
 
-  console.log(output);
   return output;
 };
 
@@ -50,13 +49,19 @@ const getFileURLs = async url => {
     .map(obj => obj.download_url);
 };
 
-async function main(url) {
+async function main(url, id) {
   const fileURLList = await getFileURLs(repoURL);
-  // TODO: fire filedata for all files in repo
-  const mdData = await getData(fileURLList[3]);
+  const mdData = await getData(fileURLList[id - 1]);
   const AST = remark.parse(mdData);
 
   return computeAST(AST);
 }
 
-main(repoURL).catch(logError);
+app.get("/api/:id", async function(req, res) {
+  const data = await main(repoURL, req.params.id).catch(logError);
+  res.send(data);
+});
+
+app.listen(3000, function() {
+  console.log("App listening on port 3000!");
+});
