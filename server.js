@@ -14,10 +14,21 @@ const logError = err => console.log(err.response);
 const getData = async url =>
   (await axios.get(url).catch(logError)).data;
 
+const mapSingleEntrys = children =>
+  children.map(el => {
+    const singleEntry = el.children[0].children;
+
+    return {
+      topic: singleEntry[0].children[0].value,
+      link: singleEntry[2].url,
+      description: singleEntry[4].value
+    };
+  });
+
 const computeAST = AST => {
   const lists = AST.children
     .filter(el => el.type !== "heading")
-    .map(({ children }) => ({ list: children }));
+    .map(({ children }) => mapSingleEntrys(children));
 
   const headings = AST.children
     .filter(el => el.type === "heading" && el.depth >= 4)
@@ -25,11 +36,10 @@ const computeAST = AST => {
 
   const output = headings.map((el, i) => ({
     ...el,
-    list: lists[i].list
+    list: lists[i]
   }));
 
-  console.log(list);
-
+  console.log(output);
   return output;
 };
 
@@ -49,4 +59,4 @@ async function main(url) {
   return computeAST(AST);
 }
 
-main(repoURL).catch(logError).data;
+main(repoURL).catch(logError);
