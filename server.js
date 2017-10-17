@@ -7,7 +7,7 @@ require("./axios.config.js");
 const remarkAbstract = require("remark");
 const remark = remarkAbstract();
 
-const url =
+const repoURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
 const logError = err => console.log(err.response);
@@ -27,20 +27,26 @@ const computeAST = AST => {
     ...el,
     list: lists[i].list
   }));
+
   console.log(output);
+
   return output;
 };
 
-async function main(url) {
+const getFileURLs = async url => {
   const repoData = await getData(url);
-  const filterRepo = repoData
+  return repoData
     .slice(2, repoData.length)
     .map(obj => obj.download_url);
+};
 
-  const fileData = await getData(filterRepo[3]);
-  const AST = remark.parse(fileData);
+async function main(url) {
+  const fileURLList = await getFileURLs(repoURL);
+  // TODO: fire filedata for all files in repo
+  const mdData = await getData(fileURLList[3]);
+  const AST = remark.parse(mdData);
 
   return computeAST(AST);
 }
 
-main(url);
+main(repoURL);
