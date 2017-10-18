@@ -1,17 +1,9 @@
 const axios = require("axios");
 
-axios.interceptors.request.use(
-  config => {
-    const token = process.env.TOKEN;
-    if (token != null) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
+const token = process.env.TOKEN;
+axios.defaults.headers.common["Authorization"] = token
+  ? `Bearer ${token}`
+  : null;
 
 axios.interceptors.response.use(
   response => {
