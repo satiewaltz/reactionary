@@ -52,17 +52,17 @@ export function computeAST({ subject, src, AST }) {
       return arr[i + 1] != null && arr[i].type != arr[i + 1].type;
     })
     .filter(el => el.type == "heading" && el.children)
-    .filter((el, i, arr) => {
+    .filter((el, index, headingsArr) => {
       // Sometimes there is an extra heading at the top
       // of a file that is sums up what the file is about.
       // We remove this since an unequal # of headings and lists
       // arrays will cause some headings to not have child
       // when we combine them into the final output.
       if (
-        arr.length > 1 &&
+        headingsArr.length > 1 &&
         lists.length > 1 &&
-        arr.length !== lists.length &&
-        i === 0
+        headingsArr.length !== lists.length &&
+        index === 0
       ) {
         return false;
       } else {
