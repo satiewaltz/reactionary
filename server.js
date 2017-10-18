@@ -7,6 +7,9 @@ require("./axios.config.js");
 const remarkAbstract = require("remark");
 const remark = remarkAbstract();
 
+/////////////////////////////////////////////////////////
+// Notes:
+//
 // First we grab a URL list of all files fromm
 // the repository with getFileURLs(). It returns an array
 // of URLs that we can use to get data from each files.
@@ -60,8 +63,7 @@ const mapSingleEntrys = children =>
     };
   });
 
-const computeAST = (AST, src) => {
-  console.log(src, "src");
+const computeAST = (AST, src, subject) => {
   const lists = AST.children
     .filter(el => el.type == "list")
     .map(({ children }) => {
@@ -70,6 +72,8 @@ const computeAST = (AST, src) => {
 
   let headings = AST.children
     .filter((el, i, arr) => {
+      // This removes any duplicate headings
+      // so we can mix this array with the list 1:1
       return arr[i + 1] != null && arr[i].type != arr[i + 1].type;
     })
     .filter(el => el.type == "heading" && el.children)
@@ -82,25 +86,26 @@ const computeAST = (AST, src) => {
     lists.length > 1 &&
     headings.length !== lists.length
   ) {
+    // Tgus renives ab extra heading on top if present
     headings = headings.slice(1);
   }
 
   // We lastly both parsed arrays
   // into one object as out final output.
-  const output = headings.map((el, i) => ({
+  const content = headings.map((el, i) => ({
     ...el,
     resources: lists[i]
   }));
 
-  console.log(output);
-  return output;
+  return { subject, src, content };
 };
 
 const getFileURLs = async url => {
   const repoData = await makeRequest(url);
   return repoData.slice(2, repoData.length).map(data => ({
+    subject: data.name.slice(0, -3),
     raw_url: data.download_url,
-    html_url: data.html_url
+    src: data.html_url
   }));
 };
 
@@ -109,24 +114,19 @@ async function main(url, id = 1) {
   const fileURLs = fileURLsList[id - 1];
   const mdData = await makeRequest(fileURLs.raw_url);
   const AST = remark.parse(mdData);
-
-  return computeAST(AST, fileURLs.html_url);
+  console.log(computeAST(AST, fileURLs.src, fileURLs.subject));
+  return computeAST(AST, fileURLs.src, fileURLs.subject);
 }
 
-// problem file list
-// fileURLList[9], 4
-// 10 & 3 => weird comaprison
-main(repoURL, 10).catch(logError);
-
 // ///////////////////////////////
-// Express:
-// app.get("/api/:id", async function(req, res) {
-//   const data = await main(repoURL, Number(req.params.id)).catch(
-//     logError
-//   );
-//   res.send(data);
-// });
+// // Express:
+app.get("/api/:id", async function(req, res) {
+  const data = await main(repoURL, Number(req.params.id)).catch(
+    logError
+  );
+  res.send(data);
+});
 
-// app.listen(3000, function() {
-//   console.log("App listening on port 3000!");
-// });
+app.listen(3000, function() {
+  console.log("App listening on port 3000!");
+});
