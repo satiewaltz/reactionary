@@ -1,4 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 const token = process.env.TOKEN;
 axios.defaults.headers.common["Authorization"] = token
@@ -25,4 +27,8 @@ axios.interceptors.response.use(
   }
 );
 
-module.exports = axios;
+export const logError = err => console.log(err.response);
+export const makeRequest = async url =>
+  (await axios.get(url).catch(logError)).data;
+
+export default axios;
