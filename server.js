@@ -54,7 +54,9 @@ const mapSingleEntrys = children =>
     return {
       title: singleEntry[0].children[0].value,
       ...(link.length > 1 ? { link } : { link: link[0] }),
-      ...(description && { description })
+      ...(description && {
+        description
+      })
     };
   });
 
@@ -67,22 +69,29 @@ const computeAST = (AST, src) => {
     });
 
   let headings = AST.children
-    .filter(
-      (el, i, arr) =>
-        arr[i + 1] != null && arr[i].type != arr[i + 1].type
-    )
+    .filter((el, i, arr) => {
+      return arr[i + 1] != null && arr[i].type != arr[i + 1].type;
+    })
     .filter(el => el.type == "heading" && el.children)
-    .map(({ children }) => ({ topic: children[0].value }));
-  // console.log(headings);
-  // if (headings.length > 1 && lists.length > 1) {
-  //   headings = headings.slice(1);
-  // }
+    .map(({ children }) => ({
+      topic: children[0].value
+    }));
+
+  if (
+    headings.length > 1 &&
+    lists.length > 1 &&
+    headings.length !== lists.length
+  ) {
+    headings = headings.slice(1);
+  }
+
   // We lastly both parsed arrays
   // into one object as out final output.
   const output = headings.map((el, i) => ({
     ...el,
     resources: lists[i]
   }));
+
   console.log(output);
   return output;
 };
@@ -107,7 +116,8 @@ async function main(url, id = 1) {
 // problem file list
 // fileURLList[9], 4
 // 10 & 3 => weird comaprison
-main(repoURL, 3).catch(logError);
+main(repoURL, 10).catch(logError);
+
 // ///////////////////////////////
 // Express:
 // app.get("/api/:id", async function(req, res) {
