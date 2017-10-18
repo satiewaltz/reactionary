@@ -18,11 +18,11 @@ async function main(id = 1) {
   const rawFile = await makeRequest(file.raw_url);
   file.AST = remark.parse(rawFile);
 
-  console.log(computeAST(file));
+  // console.log(computeAST(file));
   return computeAST(file);
 }
 
-// main(Number(10)).catch(logError);
+main(Number(10)).catch(logError);
 app.get("/api/:id", async function(req, res) {
   res.send(await main(Number(req.params.id)).catch(logError));
 });

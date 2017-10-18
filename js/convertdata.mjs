@@ -46,25 +46,30 @@ export function computeAST({ subject, src, AST }) {
   // mix this array with the list array on a 1:1 ratio.
   // Then it fitlers only headings with children and
   // returns only each heading's text. (Which is all we care about).
-  let headings = AST.children
+  const headings = AST.children
     .filter((el, i, arr) => {
+      // Remove adjcent headings from array
       return arr[i + 1] != null && arr[i].type != arr[i + 1].type;
     })
     .filter(el => el.type == "heading" && el.children)
+    .filter((el, i, arr) => {
+      // Sometimes there is an extra heading at the top
+      // of a file that is sums up what the file is about.
+      // We remove this since an unequal # of headings and lists
+      // arrays will cause some headings to not have child
+      // when we combine them into the final output.
+      if (
+        arr.length > 1 &&
+        lists.length > 1 &&
+        arr.length !== lists.length &&
+        i === 0
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    })
     .map(({ children }) => ({ topic: children[0].value }));
-
-  // Sometimes there is an extra heading at the top
-  // of a file that is sums up what the file is about.
-  // We remove this since an unequal # of headings and lists
-  // arrays will cause some headings to not have child
-  // when we combine them into the final output.
-  if (
-    headings.length > 1 &&
-    lists.length > 1 &&
-    headings.length !== lists.length
-  ) {
-    headings = headings.slice(1);
-  }
 
   const content = headings.map((topic, i) => ({
     ...topic,
