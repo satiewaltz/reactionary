@@ -59,6 +59,7 @@ const mapSingleEntrys = children =>
   });
 
 const computeAST = (AST, src) => {
+  console.log(src, "src");
   const lists = AST.children
     .filter(el => el.type == "list")
     .map(({ children }) => {
@@ -67,32 +68,19 @@ const computeAST = (AST, src) => {
 
   let headings = AST.children
     .filter(
-      el => {
-        if (this.prevType !== el.type) {
-          this.prevType = el.type;
-          return el;
-        }
-      },
-      { prevType: "" }
+      (el, i, arr) =>
+        arr[i + 1] != null && arr[i].type != arr[i + 1].type
     )
     .filter(el => el.type == "heading" && el.children)
     .map(({ children }) => ({ topic: children[0].value }));
-  // .filter(
-  //   el => {
-  //     this.prevType =
-  //       this.prevType !== el.type ? el.type : this.propType;
-  //     return el;
-  //   },
-  //   { prevType: "" }
-  // );
-  if (headings.length > 1 && lists.length > 1) {
-    headings = headings.slice(1);
-  }
+  // console.log(headings);
+  // if (headings.length > 1 && lists.length > 1) {
+  //   headings = headings.slice(1);
+  // }
   // We lastly both parsed arrays
   // into one object as out final output.
   const output = headings.map((el, i) => ({
     ...el,
-    src,
     resources: lists[i]
   }));
   console.log(output);
@@ -102,25 +90,23 @@ const computeAST = (AST, src) => {
 const getFileURLs = async url => {
   const repoData = await makeRequest(url);
   return repoData.slice(2, repoData.length).map(data => ({
-    rawSrc: data.download_url,
-    htmlSrc: data.html_url
+    raw_url: data.download_url,
+    html_url: data.html_url
   }));
 };
 
 async function main(url, id = 1) {
-  const fileURLList = await getFileURLs(repoURL);
-  const fileURL = fileURLList[id - 1];
-  // console.log(fileURLList.length);
-  // console.log(fileURLList[id]);
-  const mdData = await makeRequest(fileURL.rawSrc);
-  const AST = remark.parse(mdData, fileURL.htmlSrc);
+  const fileURLsList = await getFileURLs(repoURL);
+  const fileURLs = fileURLsList[id - 1];
+  const mdData = await makeRequest(fileURLs.raw_url);
+  const AST = remark.parse(mdData);
 
-  return computeAST(AST);
+  return computeAST(AST, fileURLs.html_url);
 }
 
 // problem file list
 // fileURLList[9], 4
-//
+// 10 & 3 => weird comaprison
 main(repoURL, 3).catch(logError);
 // ///////////////////////////////
 // Express:
