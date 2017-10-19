@@ -5,10 +5,10 @@ export const extractMetadata = data =>
     src: data.html_url
   }));
 
+// mapSingleEntrys() iterates over each child
+// and builds a simplifed object contiaining
+// only neccessary information.
 const mapSingleEntrys = children =>
-  // mapSingleEntrys() iterates over each child
-  // and builds a simplifed object contiaining
-  // only neccessary information.
   children.map(el => {
     const singleEntry = el.children[0].children;
 
