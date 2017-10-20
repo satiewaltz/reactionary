@@ -1,0 +1,23 @@
+{
+  "name": "functions",
+  "description": "Express API for React-Redux-Links",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "~5.4.0",
+    "firebase-functions": "^0.7.0",
+    "axios": "^0.16.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "remark": "^8.0.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^2.3.1",
+    "prettier": "^1.7.4"
+  },
+  "private": true
+}
