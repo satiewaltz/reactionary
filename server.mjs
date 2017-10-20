@@ -22,9 +22,10 @@ async function main(id = 1) {
   return computeAST(file);
 }
 
-main(Number(10)).catch(logError);
+// main(Number(10)).catch(logError);
 app.get("/api/:id", async function(req, res) {
-  res.send(await main(Number(req.params.id)).catch(logError));
+  const data = await main(Number(req.params.id)).catch(logError);
+  res.json(data);
 });
 app.listen(3000, () => console.log("API listening on port 3000!"));
 
