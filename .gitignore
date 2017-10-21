@@ -1,6 +1,7 @@
 unused.js
 # Created by https://www.gitignore.io/api/node
-
+/functions
+functions/
 ### Node ###
 # Logs
 logs
@@ -35,6 +36,7 @@ bower_components
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+build/
 
 # Dependency directories
 node_modules/

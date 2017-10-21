@@ -1,10 +1,3 @@
-exports.extractMetadata = data =>
-  data.slice(2, data.length).map(data => ({
-    subject: data.name.slice(0, -3),
-    raw_url: data.download_url,
-    src: data.html_url
-  }));
-
 // mapSingleEntrys() iterates over each child
 // and builds a simplifed object contiaining
 // only neccessary information.
@@ -34,7 +27,7 @@ const mapSingleEntrys = children =>
     };
   });
 
-exports.computeAST = function computeAST({ subject, src, AST }) {
+export default function computeAST({ subject, src, AST }) {
   // We first filter out all children only for
   // lists - than we map each children
   // for only the data we want. (A title, a link, and a description.)
@@ -77,6 +70,4 @@ exports.computeAST = function computeAST({ subject, src, AST }) {
   }));
 
   return { subject, src, content };
-};
-
-// module.exports = exports;
+}

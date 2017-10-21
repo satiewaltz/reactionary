@@ -1,6 +1,6 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
-const axios = require("axios");
+import axios from "axios";
 
 axios.defaults.baseURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
@@ -30,4 +30,4 @@ axios.interceptors.response.use(
   }
 );
 
-module.exports = axios;
+export default axios;
