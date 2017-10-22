@@ -1,11 +1,12 @@
-import dotenv from "dotenv";
-dotenv.config();
+import * as functions from "firebase-functions";
+import config from "../.runtimeconfig.json";
 import axios from "axios";
 
 axios.defaults.baseURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
-const token = process.env.TOKEN;
+const token = config.github.token;
+
 axios.defaults.headers.common["Authorization"] = token
   ? `Bearer ${token}`
   : null;

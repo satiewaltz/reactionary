@@ -1,17 +1,27 @@
-//////////////////////////////////
+/////////////////////////////////////////////////////////
 // Reactionary API - Dave Barthly
-// ===============================
-
-// const functions = require("firebase-functions");
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
+// ======================================================
+// Program flow:
 //
-// exports.helloWorld = functions.https.onRequest(
-//   (request, response) => {
-//     response.send("Hello from boooooooo!");
-//   }
-// );
+// First we grab a URL list of all files fromm
+// the repository with getFileURLs(). It returns an array
+// of URLs that we can use to get data from each files.
+//
+// Next, we get the raw markdown file from each file in the repo
+// then parse each file into an AST (Abstract Syntax Tree).
+// Passing that into computeAST() will return a cleaned up
+// object of the markdown file that is properly organized into
+// an array of objects containing an entry of each resource:
+//
+// {
+//   topic: 'Async programming with ES6',
+//   resources: [{
+//     title: 'Using ES6 JavaScript async/await'
+//     link: "https://developer.mozilla.org.... | [Array] of links
+//     description: 'Official documentation on using an async function."
+//   }]
+// }
+/////////////////////////////////////////////////////////
 
 import * as functions from "firebase-functions";
 import express from "express";
@@ -21,6 +31,7 @@ import remark from "remark";
 import computeAST from "./js/convertdata.mjs";
 
 const app = express();
+
 const logError = err => console.log(err.response);
 const makeRequest = async url =>
   (await axios.get(url).catch(logError)).data;
@@ -43,56 +54,20 @@ async function main(id = 1) {
 }
 
 // // main(Number(10)).catch(logError);
-console.log("AYYYYY LMAOOOOOOOOOO");
 
-app.get("/api/:id", async function(req, res) {
+app.get("/:id", async function(req, res) {
   const data = await main(Number(req.params.id)).catch(logError);
+  console.log(data);
   res.set("Cache-Control", "public, max-age=300, s-maxage=5000");
   res.json(data);
 });
-// console.log(functions);
-
-// export const helloWorld = functions.https.onRequest(
-//   (request, response) => {
-//     response.send("Hello from boooooooo!");
-//   }
-// );
 
 app.get("/", async function(req, res) {
-  res.json(":^)");
+  res.send(
+    "Reactionary API by Dave Barthly. Send a request to /api/{#id} to get a resource."
+  );
 });
-export const api = functions.https.onRequest(app);
 
-// main().catch(logError);
-// let a = functions.https.onRequest(app);
-// let exports = {
-//   api: functions.https.onRequest(app)
-// };
-// export const api = https.onRequest((request, response) => {
-//   response.send("Hello from boooooooo!");
-// });
-
-// app.listen(3000, () => console.log("API listening on port 3000!"));
-
-/////////////////////////////////////////////////////////
-// Program flow:
-//
-// First we grab a URL list of all files fromm
-// the repository with getFileURLs(). It returns an array
-// of URLs that we can use to get data from each files.
-//
-// Next, we get the raw markdown file from each file in the repo
-// then parse each file into an AST (Abstract Syntax Tree).
-// Passing that into computeAST() will return a cleaned up
-// object of the markdown file that is properly organized into
-// an array of objects containing an entry of each resource:
-//
-// {
-//   topic: 'Async programming with ES6',
-//   resources: [{
-//     title: 'Using ES6 JavaScript async/await'
-//     link: "https://developer.mozilla.org.... | [Array] of links
-//     description: 'Official documentation on using an async function."
-//   }]
-// }
-/////////////////////////////////////////////////////////
+export const api = !functions.default
+  ? functions.https.onRequest(app)
+  : functions.default.https.onRequest(app);

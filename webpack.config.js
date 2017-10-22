@@ -1,12 +1,12 @@
 const path = require("path");
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: "node",
   externals: [ nodeExternals() ],
-  devtool: "source-map",
+  devtool: "cheap-eval-source-map",
 
   context: path.resolve(__dirname, "src"),
   entry: { "src/index": "./index.mjs" },
@@ -38,6 +38,5 @@ module.exports = {
 
   ////////////////////////////////////////////
   // Plugins
-
   plugins: [ new CopyWebpackPlugin([ { from: "package.json" } ]) ]
 };

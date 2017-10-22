@@ -2,6 +2,9 @@ unused.js
 # Created by https://www.gitignore.io/api/node
 /functions
 functions/
+.runtimeconfig.json
+*.runtimeconfig.json
+**/runtimeconfig.json
 ### Node ###
 # Logs
 logs

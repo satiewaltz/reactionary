@@ -9,7 +9,8 @@
     "package-functions": "webpack --progress --display-error-details",
     "postpackage-functions": "cd functions && yarn && cd ..",
     "deploy": "yarn run package-functions && firebase deploy",
-    "start": "node --experimental-modules ./src/index.mjs"
+    "start": "node --experimental-modules ./src/index.mjs",
+    "local-deploy": "yarn package-functions && firebase serve --only functions"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
