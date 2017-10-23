@@ -1,11 +1,10 @@
 import * as functions from "firebase-functions";
-import config from "../.runtimeconfig.json";
 import axios from "axios";
 
 axios.defaults.baseURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
-const token = config.github.token;
+const token = functions.config().github.token;
 
 axios.defaults.headers.common["Authorization"] = token
   ? `Bearer ${token}`

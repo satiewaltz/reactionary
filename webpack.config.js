@@ -5,11 +5,17 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: "node",
-  externals: [ nodeExternals() ],
-  devtool: "cheap-eval-source-map",
+  externals: [
+    nodeExternals({
+      importType: "commonjs",
+      modulesDir: path.resolve("./src/node_modules")
+    })
+  ], // in order to ignore all modules in node_modules folder
 
   context: path.resolve(__dirname, "src"),
-  entry: { "src/index": "./index.mjs" },
+  entry: {
+    "src/index": "./index.mjs"
+  },
   output: {
     path: path.resolve(__dirname, "./functions/"),
     filename: "./index.js",
@@ -21,7 +27,10 @@ module.exports = {
   resolve: {
     mainFiles: [ "index" ],
     extensions: [ ".js", ".mjs" ], // resolves imports
-    modules: [ path.resolve("./src"), path.resolve("./node_modules") ]
+    modules: [
+      path.resolve(__dirname, "./src"),
+      path.resolve("./src/node_modules")
+    ]
   },
 
   //////////////////////////////////////
@@ -31,7 +40,7 @@ module.exports = {
       {
         test: /\.(js|mjs)$/,
         use: [ "babel-loader" ],
-        include: path.join(__dirname, "src")
+        exclude: [ path.resolve(__dirname, "./src/node_modules") ]
       }
     ]
   },
