@@ -1,4 +1,3 @@
-import * as functions from "firebase-functions";
 import axios from "axios";
 
 axios.defaults.baseURL =

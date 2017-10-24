@@ -8,16 +8,14 @@ module.exports = {
   externals: [
     nodeExternals({
       importType: "commonjs",
-      modulesDir: path.resolve("./src/node_modules")
+      modulesDir: path.resolve("./node_modules")
     })
   ], // in order to ignore all modules in node_modules folder
 
   context: path.resolve(__dirname, "src"),
-  entry: {
-    "src/index": "./index.mjs"
-  },
+  entry: "./lambda.mjs",
   output: {
-    path: path.resolve(__dirname, "./functions/"),
+    path: path.resolve(__dirname, "./dist/"),
     filename: "./index.js",
     libraryTarget: "this"
   },
@@ -29,7 +27,7 @@ module.exports = {
     extensions: [ ".js", ".mjs" ], // resolves imports
     modules: [
       path.resolve(__dirname, "./src"),
-      path.resolve("./src/node_modules")
+      path.resolve("./node_modules")
     ]
   },
 
@@ -40,7 +38,7 @@ module.exports = {
       {
         test: /\.(js|mjs)$/,
         use: [ "babel-loader" ],
-        exclude: [ path.resolve(__dirname, "./src/node_modules") ]
+        exclude: [ path.resolve(__dirname, "./node_modules") ]
       }
     ]
   },

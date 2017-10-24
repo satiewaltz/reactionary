@@ -23,12 +23,12 @@
 // }
 /////////////////////////////////////////////////////////
 
-import * as functions from "firebase-functions";
 import express from "express";
 import axios from "axios";
 import "./js/axios.config.mjs";
 import remark from "remark";
 import computeAST from "./js/convertdata.mjs";
+import awsServerlessExpress from "aws-serverless-express";
 
 const app = express();
 
@@ -68,6 +68,4 @@ app.get("/", async function(req, res) {
   );
 });
 
-export const api = !functions.default
-  ? functions.https.onRequest(app)
-  : functions.default.https.onRequest(app);
+export const handler = awsServerlessExpress.createServer(app);

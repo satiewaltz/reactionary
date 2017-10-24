@@ -12,6 +12,13 @@
     "start": "node --experimental-modules ./src/index.mjs",
     "local-deploy": "yarn package-functions && firebase serve --only functions"
   },
+  "dependencies": {
+    "aws-serverless-express": "^3.0.2",
+    "axios": "^0.16.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "remark": "^8.0.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

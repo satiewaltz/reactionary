@@ -67,4 +67,11 @@ typings/
 .env
 
 
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
 # End of https://www.gitignore.io/api/node
