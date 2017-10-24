@@ -32,7 +32,7 @@ import awsServerlessExpress from "aws-serverless-express";
 
 const app = express();
 
-const logError = err => console.log(err.response);
+const logError = err => console.log(err.response.data);
 const makeRequest = async url =>
   (await axios.get(url).catch(logError)).data;
 const extractMetadata = data =>
@@ -53,7 +53,7 @@ async function main(id = 1) {
   return computeAST(file);
 }
 
-// // main(Number(10)).catch(logError);
+main(Number(10)).catch(logError);
 
 app.get("/:id", async function(req, res) {
   const data = await main(Number(req.params.id)).catch(logError);
@@ -68,4 +68,5 @@ app.get("/", async function(req, res) {
   );
 });
 
-export const handler = awsServerlessExpress.createServer(app);
+export const handler = (event, context, cb) =>
+  awsServerlessExpress.createServer(app);

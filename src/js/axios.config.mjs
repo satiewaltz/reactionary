@@ -1,9 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
 import axios from "axios";
 
 axios.defaults.baseURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
-const token = "A";
+const token = process.env.TOKEN;
 
 axios.defaults.headers.common["Authorization"] = token
   ? `Bearer ${token}`

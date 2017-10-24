@@ -16,8 +16,8 @@ module.exports = {
   entry: "./lambda.mjs",
   output: {
     path: path.resolve(__dirname, "./dist/"),
-    filename: "./lambda.js",
-    libraryTarget: "this"
+    filename: "src/lambda.js",
+    libraryTarget: "commonjs"
   },
 
   //////////////////////////////////////////////////////

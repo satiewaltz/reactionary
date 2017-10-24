@@ -4,10 +4,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "reset": "rimraf ./functions/build && cd ./functions/ && yarn install",
-    "prepackage-functions": "rimraf functions",
     "package-functions": "webpack --progress --display-error-details",
-    "postpackage-functions": "cd functions && yarn && cd ..",
     "deploy": "yarn run package-functions && firebase deploy",
     "start": "node --experimental-modules ./src/index.mjs",
     "local-deploy": "yarn package-functions && firebase serve --only functions"
@@ -31,6 +28,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
+    "serverless-dotenv-plugin": "^1.0.1",
     "serverless-webpack": "^3.1.2",
     "webpack": "^3.8.1",
     "webpack-node-externals": "^1.6.0"
