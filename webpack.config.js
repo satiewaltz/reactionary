@@ -16,7 +16,7 @@ module.exports = {
   entry: "./lambda.mjs",
   output: {
     path: path.resolve(__dirname, "./dist/"),
-    filename: "./index.js",
+    filename: "./lambda.js",
     libraryTarget: "this"
   },
 
@@ -41,9 +41,5 @@ module.exports = {
         exclude: [ path.resolve(__dirname, "./node_modules") ]
       }
     ]
-  },
-
-  ////////////////////////////////////////////
-  // Plugins
-  plugins: [ new CopyWebpackPlugin([ { from: "package.json" } ]) ]
+  }
 };

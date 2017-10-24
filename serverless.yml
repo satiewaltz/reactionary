@@ -22,8 +22,8 @@ provider:
   runtime: nodejs6.10
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -56,7 +56,7 @@ provider:
 
 functions:
   api:
-    handler: src/lambda.handler
+    lambda: lambda.handler
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -101,3 +101,9 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+plugins:
+  - serverless-webpack
+
+custom:
+  webpackIncludeModules: true # enable auto-packing of external modules
+
