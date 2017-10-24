@@ -53,7 +53,9 @@ async function main(id = 1) {
   return computeAST(file);
 }
 
-main(Number(10)).catch(logError);
+if (process.env.NODE_ENV == "dev") {
+  main(Number(10)).catch(logError);
+}
 
 app.get("/:id", async function(req, res) {
   const data = await main(Number(req.params.id)).catch(logError);

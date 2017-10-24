@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "package-functions": "webpack --progress --display-error-details",
-    "deploy": "yarn run package-functions && firebase deploy",
-    "start": "node --experimental-modules ./src/index.mjs",
-    "local-deploy": "yarn package-functions && firebase serve --only functions"
+    "start": "NODE_ENV=dev node --experimental-modules ./src/lambda.mjs",
+    "aws-package": "sls package local --function api",
+    "aws-invoke": "NODE_ENV=dev sls invoke local --function api",
+    "aws-deploy": "sls deploy function --function api"
   },
   "dependencies": {
     "aws-serverless-express": "^3.0.2",
