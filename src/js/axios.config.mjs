@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.baseURL =
   "https://api.github.com/repos/markerikson/react-redux-links/contents";
 
-const token = functions.config().github.token;
+const token = "A";
 
 axios.defaults.headers.common["Authorization"] = token
   ? `Bearer ${token}`
