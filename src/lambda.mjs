@@ -70,5 +70,6 @@ app.get("/", async function(req, res) {
   );
 });
 
-export const handler = (event, context, cb) =>
-  awsServerlessExpress.createServer(app);
+const server = awsServerlessExpress.createServer(app);
+export const handler = (event, context) =>
+  awsServerlessExpress.proxy(server, event, context);

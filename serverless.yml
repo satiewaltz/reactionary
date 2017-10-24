@@ -1,8 +1,4 @@
-service: reactionary-api # NOTE: update this with your service name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+service: reactionary-api
 
 provider:
   name: aws
@@ -11,10 +7,6 @@ provider:
 # you can overwrite defaults here
   stage: dev
   region: us-east-1
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
 
   environment:
     TOKEN: "${env:TOKEN}"
@@ -37,9 +29,11 @@ functions:
 
     events:
      - http:
-        method: get
-        path: hello
-        integration: lambda
+        method: GET
+        path: /{id}
+     - http:
+        method: GET
+        path: /
 
 plugins:
   - serverless-webpack
