@@ -1,11 +1,11 @@
-service: reactionary-api
+service: reactionary
 
 provider:
   name: aws
   runtime: nodejs6.10
 
 # you can overwrite defaults here
-  stage: api
+  stage: dev
   region: us-east-1
 
   environment:
@@ -38,6 +38,7 @@ functions:
 plugins:
   - serverless-webpack
   - serverless-dotenv-plugin
+  - serverless-domain-manager
 
 custom:
   webpackIncludeModules: true # enable auto-packing of external modules
@@ -45,3 +46,9 @@ custom:
     path: .env
     include:
       - TOKEN
+  customDomain:
+    domainName: api.theweb.rocks
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateName: "*.theweb.rocks"
