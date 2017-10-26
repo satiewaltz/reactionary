@@ -51,4 +51,4 @@ custom:
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
-    certificateName: "*.theweb.rocks"
+    certificateName: '*.theweb.rocks'
