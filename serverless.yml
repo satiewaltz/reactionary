@@ -4,21 +4,12 @@ provider:
   name: aws
   runtime: nodejs6.10
 
-# you can overwrite defaults here
   stage: dev
   region: us-east-1
 
   environment:
     TOKEN: "${env:TOKEN}"
 
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
 package:
   exclude:
     - .env
