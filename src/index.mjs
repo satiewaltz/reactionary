@@ -2,25 +2,12 @@ import http from "http";
 import express from "express";
 import app from "./server";
 import awsServerlessExpress from "aws-serverless-express";
-import { main, logError } from "./lambda";
+import { getSubject, logError } from "./lambda";
+import browserSync from "browser-sync";
 
 if (process.env.NODE_ENV == "dev") {
-  let currentApp = app;
-  const devServer = http.createServer(app);
-  const logMsg =
-    "!!! ===== Server listening on port 3000 ===== !!!\n";
-
-  devServer.listen(3000, () => console.log(logMsg));
-
-  if (module.hot) {
-    module.hot.accept([ "./index" ], () => {
-      devServer.removeListener("request", currentApp);
-      devServer.on("request", app);
-      currentApp = app;
-    });
-  }
-
-  main(Number(10)).catch(logError);
+  app.listen(3000);
+  getSubject(Number(10)).catch(logError);
 }
 
 const server = awsServerlessExpress.createServer(app);

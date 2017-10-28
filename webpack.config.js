@@ -19,11 +19,11 @@ module.exports = {
   entry: getEntries(),
   plugins: getPlugins(),
   output: {
-    path: path.resolve(__dirname, "./dist/"),
-    filename: "src/lambda.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
     libraryTarget: "commonjs",
-    publicPath: path.resolve(__dirname, "./dist/"),
-    pathinfo: isDev
+    pathinfo: isDev,
+    publicPath: "/mem/"
   },
 
   //////////////////////////////////////////////////////
@@ -50,26 +50,18 @@ module.exports = {
   }
 };
 
-function getPlugins() {
-  let plugins = [];
-
+function getPlugins(plugins = []) {
   if (isDev) {
-    plugins = plugins.concat([
-      new StartServerPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.HotModuleReplacementPlugin()
-    ]);
+    plugins = plugins.concat([ new webpack.NamedModulesPlugin() ]);
   }
 
   return plugins;
 }
 
-function getEntries() {
-  let entries = [];
-
+function getEntries(entries = []) {
   if (isDev) {
     entries = entries.concat([
-      "webpack-dev-server/client?http://0.0.0.0:3000",
+      "webpack-dev-server/client?http://0.0.0.0:8080",
       "webpack/hot/only-dev-server",
       "./index.mjs"
     ]);
@@ -80,9 +72,7 @@ function getEntries() {
   return entries;
 }
 
-function initDevServer() {
-  let devConfig = {};
-
+function initDevServer(devConfig = {}) {
   if (isDev) {
     devConfig = {
       host: "0.0.0.0",
@@ -91,7 +81,7 @@ function initDevServer() {
       compress: true,
       historyApiFallback: true,
       disableHostCheck: true,
-      contentBase: false
+      publicPath: "/dist/"
     };
   }
 

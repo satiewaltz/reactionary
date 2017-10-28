@@ -1,21 +1,23 @@
 import express from "express";
-import { main, logError } from "./lambda";
+import { getSubject, getAllSubjects, logError } from "./lambda";
 
 const app = express();
 
+app.use(function cache(req, res, next) {
+  if (process.env.NODE_ENV != "dev") {
+    res.set("Cache-Control", "public, max-age=300, s-maxage=5000");
+  }
+  next();
+});
+
 app.get("/:id", async function(req, res) {
-  const data = await main(Number(req.params.id)).catch(logError);
-  console.log(data);
-  res.set("Cache-Control", "public, max-age=300, s-maxage=5000");
+  const data = await getSubject(req.params.id).catch(logError);
   res.json(data);
 });
 
 app.get("/", async function(req, res) {
-  res.send(
-    `Reactionary API by Dave Barthly.
-Send a request to /api/{#id} to get a resource.
-(Example: "https://api.theweb.rocks/1")`
-  );
+  const data = await getAllSubjects(req).catch(logError);
+  res.json(data);
 });
 
 export default app;

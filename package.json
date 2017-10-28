@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=dev webpack-dev-server --colors --progress",
-    "package": "sls package local --function api",
+    "start": "NODE_ENV=dev nodemon --experimental-modules ./src/index.mjs",
+    "build": "sls package --function api",
+    "w": "webpack",
     "deploy": "sls deploy"
   },
   "dependencies": {
@@ -13,10 +14,11 @@
     "axios": "^0.16.2",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
-    "remark": "^8.0.0"
+    "remark": "^8.0.0",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.20.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
@@ -25,6 +27,7 @@
     "babel-preset-env": "^1.6.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "copy-webpack-plugin": "^4.2.0",
+    "nodemon": "^1.12.1",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
     "serverless-domain-manager": "^1.1.15",

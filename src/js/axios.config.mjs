@@ -16,7 +16,7 @@ axios.interceptors.response.use(
     let msg = "// GitHub Response Success! /////////////////";
     if (response.headers["x-ratelimit-remaining"]) {
       console.log(
-        `GitHub REMAINING REQS: ${response.headers[
+        `\nGitHub REMAINING REQS: ${response.headers[
           "x-ratelimit-remaining"
         ]}`
       );
