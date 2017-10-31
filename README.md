@@ -14,16 +14,20 @@ object of the markdown file that is properly organized into
 an array of objects containing an entry of each resource:
 ```json
 {
-  topic: "Async programming with ES6",
-  resources: [
+  "topic": "Async programming with ES6",
+  "resources": [
     {
-      title: "Using ES6 JavaScript async/await",
-      link: "https://developer.mozilla.org.... | [Array] of links
-      description: 'Official documentation on using an async function."
+      "title": "Using ES6 JavaScript async/await",
+      "link": "https://developer.mozilla.org", // Is an array if more than 1 link.
+      "description": 'Official documentation on using an async function."
     }, {...}, {...}, ...
   ]
 }
 ```
+
+<p align="center">
+  <img src="./assets/sample.png" alt="Sample response from API"/>
+</p>
 
 ---
 
