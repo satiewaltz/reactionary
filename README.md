@@ -1,5 +1,7 @@
 # Reactionary API 
-> *A serverless RESTful API built for accessing Mark Erikson's [react-redux-links](https://github.com/markerikson/react-redux-links) collection.*
+>*A serverless RESTful API built for accessing Mark Erikson's [react-redux-links](https://github.com/markerikson/react-redux-links) collection.*
+
+*Try it out:* `curl -l https://api.theweb.rocks/ | python -m json.tool`
 
 ### Overview
 
