@@ -13,17 +13,19 @@ axios.defaults.headers.common["Authorization"] = token
 
 axios.interceptors.response.use(
   response => {
-    let msg = "// GitHub Response Success! /////////////////";
-    if (response.headers["x-ratelimit-remaining"]) {
-      console.log(
-        `\nGitHub REMAINING REQS: ${response.headers[
-          "x-ratelimit-remaining"
-        ]}`
-      );
-    } else {
-      msg += "\n";
+    if (process.env.NODE_ENV == "dev") {
+      let msg = "// GitHub Response Success! /////////////////";
+      if (response.headers["x-ratelimit-remaining"]) {
+        console.log(
+          `\nGitHub REMAINING REQS: ${response.headers[
+            "x-ratelimit-remaining"
+          ]}`
+        );
+      } else {
+        msg += "\n";
+      }
+      console.log(msg);
     }
-    console.log(msg);
     return response;
   },
   error => {
