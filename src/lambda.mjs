@@ -8,8 +8,9 @@ export const logError = err => console.error(err.response);
 const makeRequest = async url =>
   (await axios.get(url).catch(logError)).data;
 
-const extractMetadata = data =>
-  data.slice(2, data.length).map(data => ({
+const extractMetadata = (data, url) =>
+  data.slice(2, data.length).map((data, i) => ({
+    contents: url ? url + String(i + 1) : null,
     subject: data.name.slice(0, -3),
     raw_url: data.download_url,
     src: data.html_url
@@ -18,19 +19,32 @@ const extractMetadata = data =>
 export async function getSubject(id = 1) {
   id = Number(id);
   const fileURLsList = await makeRequest().then(extractMetadata);
-  const file = fileURLsList[id - 1];
-  const rawFile = await makeRequest(file.raw_url);
-  file.AST = remark.parse(rawFile);
-  console.log(computeAST(file));
-  return computeAST(file);
+
+  if (id < fileURLsList.length) {
+    const file = fileURLsList[id - 1];
+    const rawFile = await makeRequest(file.raw_url);
+    file.AST = remark.parse(rawFile);
+
+    console.log(computeAST(file));
+    return computeAST(file);
+  } else {
+    return {
+      code: "404",
+      message: `The resource for that id does not exist. Try an id from /1 to /${fileURLsList.length}.`
+    };
+  }
 }
 
 export async function getAllSubjects(req) {
-  const fullUrl =
+  const url =
     req.protocol + "://" + req.get("host") + req.originalUrl;
-  const subjects = await makeRequest().then(extractMetadata);
-  subjects.forEach((el, i) => (el.parsed = fullUrl + String(i + 1)));
+
+  const subjects = await makeRequest().then(data =>
+    extractMetadata(data, url)
+  );
+
   return {
+    code: "200",
     info: `react-redux-links API by Dave Barthly`,
     curator: `Mark Erikson`,
     community: `https://www.reactiflux.com/`,

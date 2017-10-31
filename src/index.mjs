@@ -3,10 +3,11 @@ import express from "express";
 import app from "./server";
 import awsServerlessExpress from "aws-serverless-express";
 import { getSubject, logError } from "./lambda";
-import browserSync from "browser-sync";
 
 if (process.env.NODE_ENV == "dev") {
-  app.listen(3000);
+  app.listen(3000, () =>
+    console.log("Listening on port 3000. http://localhost:3000")
+  );
   getSubject(Number(10)).catch(logError);
 }
 
