@@ -12,8 +12,8 @@ const extractMetadata = (data, url) =>
   data.slice(2, data.length).map((data, i) => ({
     subject: data.name.slice(0, -3),
     contents: url ? url + String(i + 1) : null,
-    raw_url: data.download_url,
-    src: data.html_url
+    src: data.html_url,
+    raw_url: data.download_url
   }));
 
 export async function getSubject(id = 1) {
