@@ -5,8 +5,9 @@ import awsServerlessExpress from "aws-serverless-express";
 import { getSubject, logError } from "./lambda";
 
 if (process.env.NODE_ENV == "dev") {
-  app.listen(3000, () =>
-    console.log("Listening on port 3000. http://localhost:3000")
+  const port = 3000;
+  app.listen(port, () =>
+    console.log(`Listening on port ${port}. http://localhost:${port}`)
   );
   getSubject(Number(10)).catch(logError);
 }
