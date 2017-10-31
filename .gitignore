@@ -2,6 +2,8 @@ unused.js
 # Created by https://www.gitignore.io/api/node
 /functions
 functions/
+.webpack
+.webpack/
 .runtimeconfig.json
 *.runtimeconfig.json
 **/runtimeconfig.json

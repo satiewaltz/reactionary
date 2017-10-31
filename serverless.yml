@@ -16,7 +16,7 @@ package:
 
 functions:
   api:
-    handler: src/lambda.handler
+    handler: src/index.handler
 
     events:
      - http:
