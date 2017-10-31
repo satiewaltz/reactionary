@@ -71,5 +71,5 @@ export default function computeAST({ subject, src, AST }) {
 
   const code = "200";
 
-  return { code, subject, src, content };
+  return { subject, code, src, content };
 }
