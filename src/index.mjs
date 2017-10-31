@@ -1,4 +1,3 @@
-import http from "http";
 import express from "express";
 import app from "./server";
 import awsServerlessExpress from "aws-serverless-express";

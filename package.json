@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=dev node --experimental-modules ./src/index.mjs",
     "build": "sls package --function api",
-    "w": "webpack",
+    "local": "sls local --function api",
     "deploy": "sls deploy"
   },
   "dependencies": {

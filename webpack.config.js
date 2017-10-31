@@ -15,8 +15,7 @@ module.exports = {
   ], // in order to ignore all modules in node_modules folder
 
   context: path.resolve(__dirname, "src"),
-  devServer: initDevServer(),
-  entry: getEntries(),
+  entry: "./index.mjs",
   plugins: getPlugins(),
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -58,32 +57,32 @@ function getPlugins(plugins = []) {
   return plugins;
 }
 
-function getEntries(entries = []) {
-  if (isDev) {
-    entries = entries.concat([
-      "webpack-dev-server/client?http://0.0.0.0:8080",
-      "webpack/hot/only-dev-server",
-      "./index.mjs"
-    ]);
-  } else {
-    entries = "./index.mjs";
-  }
+// function getEntries(entries = []) {
+//   if (isDev) {
+//     entries = entries.concat([
+//       "webpack-dev-server/client?http://0.0.0.0:8080",
+//       "webpack/hot/only-dev-server",
+//       "./index.mjs"
+//     ]);
+//   } else {
+//     entries = "./index.mjs";
+//   }
 
-  return entries;
-}
+//   return entries;
+// }
 
-function initDevServer(devConfig = {}) {
-  if (isDev) {
-    devConfig = {
-      host: "0.0.0.0",
-      hot: true,
-      inline: true,
-      compress: true,
-      historyApiFallback: true,
-      disableHostCheck: true,
-      publicPath: "/dist/"
-    };
-  }
+// function initDevServer(devConfig = {}) {
+//   if (isDev) {
+//     devConfig = {
+//       host: "0.0.0.0",
+//       hot: true,
+//       inline: true,
+//       compress: true,
+//       historyApiFallback: true,
+//       disableHostCheck: true,
+//       publicPath: "/dist/"
+//     };
+//   }
 
-  return devConfig;
-}
+//   return devConfig;
+// }
