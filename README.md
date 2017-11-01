@@ -3,6 +3,15 @@
 
 *Try it out:* `curl -l https://api.theweb.rocks/ | python -m json.tool`
 
+### Endpoints
+Collection of all files including some metadata:
+`https://api.theweb.rocks`
+
+Resources and links from a single file:
+`https://api.theweb.rocks/:id` 
+
+*ID is a number starting from 1. (Ex. `/1` returns the "basic concepts" file.)*
+
 ### Overview
 
 First we grab a URL list of all files fromm
