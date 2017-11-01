@@ -69,7 +69,5 @@ export default function computeAST({ subject, src, AST }) {
     resources: lists[i]
   }));
 
-  const code = "200";
-
-  return { code, subject, src, content };
+  return { subject, src, content };
 }

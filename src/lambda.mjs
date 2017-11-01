@@ -26,11 +26,11 @@ export async function getSubject(id = 1) {
     file.AST = remark.parse(rawFile);
 
     console.log(computeAST(file));
-    return computeAST(file);
+    return { code: 200, data: computeAST(file) };
   } else {
     return {
-      code: "404",
-      message: `The resource for that id does not exist. Try an id from /1 to /${fileURLsList.length}.`
+      code: 404,
+      data: `The resource for that id does not exist. Try an id from /1 to /${fileURLsList.length}.`
     };
   }
 }

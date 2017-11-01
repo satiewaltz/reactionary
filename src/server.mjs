@@ -10,14 +10,18 @@ app.use(function cache(req, res, next) {
   next();
 });
 
-app.get("/:id", async function(req, res) {
-  const data = await getSubject(req.params.id).catch(logError);
-  res.json(data);
+app.get("/:id(\\d+)/", async function(req, res) {
+  const subject = await getSubject(req.params.id).catch(logError);
+  res.status(subject.code).json(subject.data);
 });
 
 app.get("/", async function(req, res) {
   const data = await getAllSubjects(req).catch(logError);
   res.json(data);
+});
+
+app.get("*", function(req, res) {
+  res.status(404).json(`That route doesn't seem to exist.`);
 });
 
 export default app;
